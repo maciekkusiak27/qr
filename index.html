@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .grid {
+            display: inline-block;
+            text-align: left;
+            margin-top: 20px;
+        }
+        textarea {
+            width: 100%;
+            height: 60px;
+            margin: 10px 0;
+        }
+        select, input[type="submit"] {
+            margin: 10px 0;
+        }
+        #qrcode {
+            margin-top: 20px;
+            padding: 10px;
+            display: none;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode/build/qrcode.min.js"></script>
+</head>
+<body>
+    <h2>QR Code Generator</h2>
+    <div class="grid">
+        <textarea placeholder="Wprowadź link" id="qrtext"></textarea>
+        <select name="size" id="size">
+            <option value="100">100x100</option>
+            <option value="200">200x200</option>
+            <option value="300" selected>300x300</option>
+            <option value="400">400x400</option>
+        </select>
+        <input type="submit" value="Generate" onclick="genQR()">
+        <canvas id="qrcode"></canvas>
+    </div>
+
+    <script type="text/javascript">
+        function genQR() {
+            const qrText = document.getElementById("qrtext").value;
+            const size = parseInt(document.getElementById("size").value);
+
+            if (!qrText) {
+                alert("Proszę wprowadzić link lub tekst do wygenerowania kodu QR.");
+                return;
+            }
+
+            const qrCodeCanvas = document.getElementById("qrcode");
+            qrCodeCanvas.style.display = "none"; 
+
+            QRCode.toCanvas(qrCodeCanvas, qrText, {
+                width: size,
+                margin: 1
+            }, function (error) {
+                if (error) {
+                    console.error(error);
+                    alert("Nie udało się wygenerować kodu QR.");
+                } else {
+                    qrCodeCanvas.style.display = "block";
+                }
+            });
+        }
+    </script>
+</body>
+</html>
